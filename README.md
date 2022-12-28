@@ -1,5 +1,6 @@
 # Spot Pricing Notes
 
+These are just my notes, check out https://cloudoptimizer.io/ for a real implimentation 
 ## AWS
 
 Resources:
