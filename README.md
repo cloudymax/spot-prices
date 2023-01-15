@@ -120,6 +120,21 @@ Creating an API key using the gcloud CLI
 gcloud alpha services api-keys create --display-name=SOME_NAME
 ```
 
+```bash
+curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(bw get notes "GCP API key") > skus_compute_engine.json 
+
+FAMILY="N1Standard"
+REGION="europe-west1"
+cat skus_compute_engine.json | jq -r \
+'.skus[] | select((.serviceRegions | index( env.REGION )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY)'
+
+export FAMILY="GPU"
+export GPU_TYPE="K80"
+export REGION="europe-west1"
+cat skus_compute_engine.json | jq -r '.skus[] | select((.serviceRegions | index( env.REGION )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and select(.description | contains( env.GPU_TYPE )))'
+
+```
+
 
 ## Chart Rough Draft
 
