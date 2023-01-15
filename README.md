@@ -125,19 +125,23 @@ curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(b
 
 export FAMILY="N1Standard"
 export REGION="europe-west1"
-export CORES="8"
+export CORES="2"
 export DATA=$(cat skus_compute_engine.json | jq -r \
 '.skus[] | select((.serviceRegions | index( env.REGION )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY)')
+
 export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
 CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
 CPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $CORES" )
 echo "CPU Price: $CPU_PRICE"
 
+
+GPU Types: T4, K80, A100, V100, P100
+
 export FAMILY="GPU"
-export GPU_TYPE="K80"
+export GPU_TYPE="T4"
 export GPUS=1
-export REGION="europe-west1"
-export DATA=$(cat skus_compute_engine.json | jq -r '.skus[] | select((.serviceRegions | index( env.REGION )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and select(.description | contains( env.GPU_TYPE )))')
+export REGION='"europe-west1", "europe-west4"'
+DATA=$(cat skus_compute_engine.json | jq -r --arg REGION "$REGION" '.skus[] | select((.serviceRegions | index( '"$REGION"' )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and .category.usageType=="Preemptible" and select(.description | contains( env.GPU_TYPE )))')
 export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
 CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
 GPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $GPUS" )
