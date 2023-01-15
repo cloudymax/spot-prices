@@ -48,7 +48,7 @@ rich table.csv
 ```
 
 
-How to Get prices:
+### How to Get prices:
 ```bash
 ZONE="eu-central-1a"
 INSTANCES="m6i.large"
@@ -71,7 +71,7 @@ Resources:
 - [Spot Prices](https://azure.microsoft.com/en-us/pricing/spot-advisor/)
 - [Instance Types](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-general)
 
-How to Get Prices:
+### How to Get Prices:
 ```bash
 API_URL="https://prices.azure.com/api/retail/prices"
 LOCATION="'EU West'"
@@ -98,7 +98,7 @@ Resources
 - [Metros](https://metal.equinix.com/developers/docs/locations/metros/)
 - [Instance types](https://metal.equinix.com/product/servers/)
 
-How to Get Prices
+### How to Get Prices
 ```bash
 TOKEN=""
 URL="https://api.equinix.com/metal/v1/market/spot/prices/metros"
@@ -119,7 +119,7 @@ The fact that the only GPU capable SKU's are the N1 (random cpu) or A2 (cascade 
 - https://www.densify.com/articles/google-compute-engine-machine-types
 
 
-# How to get Prices
+### How to get Prices
 
 1. have an existing project (an organzation alone isnt enough)
 2. Enable the Cloud Billing API: https://console.cloud.google.com/flows/enableapi?apiid=cloudbilling.googleapis.com
