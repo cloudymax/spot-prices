@@ -136,11 +136,15 @@ Get price data about the CPU, RAM, and GPU per hour, then combine
 ```bash
 curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(bw get notes "GCP API key") > skus_compute_engine.json 
 
-export FAMILY="N1Standard"
-export REGION="europe-west1"
+CPU Types: "N1Standard", "CPU"
+
+export FAMILY="N1Standard" # or `CPU`
+export REGION='"europe-west1", "europe-west4", "europe-central2"'
 export CORES="2"
-export DATA=$(cat skus_compute_engine.json | jq -r \
-'.skus[] | select((.serviceRegions | index( env.REGION )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY)')
+export CPU_TIER="N1" # or A2 
+export DATA=$()
+
+DATA=$(cat skus_compute_engine.json | jq -r --arg REGION "$REGION" '.skus[] | select((.serviceRegions | index( '"$REGION"' )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and .category.usageType=="Preemptible" and select(.description | contains( env.CPU_TIER )))')
 
 export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
 CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
