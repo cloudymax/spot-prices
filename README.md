@@ -1,6 +1,7 @@
 # Spot Pricing Notes
 
 These are just my notes, check out https://cloudoptimizer.io/ for a real implimentation 
+
 ## AWS
 
 Resources:
@@ -109,16 +110,28 @@ echo $PRICES > prices.json && \
 rich prices.json
 ```
 
-## GCP
+## Google Cloud Platform
+
+Google is the worst when it comes to transparancy around what exact CPU you will get when you request a VM from them.
+UNless you want the NEWEST (A2 - Cascade lake), you could get ANY cpu from a mix of old to really old CPUs.
+The fact that the only GPU capable SKU's are the N1 (random cpu) or A2 (cascade lake) means I can't really give an accurate CPU model or date.
+
+- https://www.densify.com/articles/google-compute-engine-machine-types
+
+
+# How to get Prices
 
 1. have an existing project (an organzation alone isnt enough)
 2. Enable the Cloud Billing API: https://console.cloud.google.com/flows/enableapi?apiid=cloudbilling.googleapis.com
 3. Create an API key: https://cloud.google.com/docs/authentication/api-keys
 
-Creating an API key using the gcloud CLI
+Create an API key using the gcloud CLI
+
 ```bash
 gcloud alpha services api-keys create --display-name=SOME_NAME
 ```
+
+Get price data about the CPU, RAM, and GPU per hour, then combine
 
 ```bash
 curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(bw get notes "GCP API key") > skus_compute_engine.json 
