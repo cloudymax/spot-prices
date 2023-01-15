@@ -109,6 +109,17 @@ echo $PRICES > prices.json && \
 rich prices.json
 ```
 
+## GCP
+
+1. have an existing project (an organzation alone isnt enough)
+2. Enable the Cloud Billing API: https://console.cloud.google.com/flows/enableapi?apiid=cloudbilling.googleapis.com
+3. Create an API key: https://cloud.google.com/docs/authentication/api-keys
+
+Creating an API key using the gcloud CLI
+```bash
+gcloud alpha services api-keys create --display-name=SOME_NAME
+```
+
 
 ## Chart Rough Draft
 
