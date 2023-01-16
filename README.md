@@ -153,7 +153,7 @@ curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(b
 
 export FAMILY="N1Standard" # or `CPU`
 export REGION='"europe-west1", "europe-west4", "europe-central2"'
-export CORES="2"
+export CORES="16"
 export CPU_TIER="N1" # or A2 
 
 DATA=$(cat skus_compute_engine.json \
@@ -170,6 +170,28 @@ CPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $CORES" )
 echo "CPU Price: $CPU_PRICE"
 ```
 
+Get RAM price:
+
+```bash
+export FAMILY="N1Standard" # or `RAM`
+export REGION='"europe-west1", "europe-west4"'
+export RAM_AMOUNT="64"
+export CPU_TIER="N1"
+
+DATA=$(cat skus_compute_engine.json \
+  | jq -r --arg REGION "$REGION" '.skus[] 
+  | select((.serviceRegions | index( '"$REGION"' )) 
+  and select(.pricingInfo[0].pricingExpression.usageUnit=="GiBy.h") 
+  and .category.resourceGroup==env.FAMILY 
+  and .category.usageType=="Preemptible" 
+  and select(.description | contains( env.CPU_TIER )))')
+
+export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
+CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
+RAM_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $RAM_AMOUNT" )
+echo "RAM Price: $RAM_PRICE"
+```
+
 Get price per GPU
 
 ```bash
@@ -184,7 +206,7 @@ Get price per GPU
 GPU Types: T4, P4, A100, P100
 
 export FAMILY="GPU"
-export GPU_TYPE="P100"
+export GPU_TYPE="T4"
 export GPUS=1
 export REGION='"europe-west1", "europe-west4"'
 
@@ -210,7 +232,7 @@ echo "GPU Price: $GPU_PRICE"
 Combine prices
 
 ```bash
-COMBINED_PRICE=$(bc <<< "scale=5; $CPU_PRICE + $GPU_PRICE")
+COMBINED_PRICE=$(bc <<< "scale=5; $CPU_PRICE + $RAM_PRICE + $GPU_PRICE")
 echo "Combined Price: $COMBINED_PRICE"
 ```
 
