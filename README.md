@@ -4,6 +4,8 @@ These are just my notes, check out https://cloudoptimizer.io/ for a real implime
 
 ## AWS
 
+Getting AWS prices is actuall pretty straight-forward, each metadata filed is queryable in an intuitive way.
+
 Resources:
 
 - [Spot Prices](https://aws.amazon.com/ec2/spot/pricing/)
@@ -29,7 +31,6 @@ do
 
   MEMORY=$(aws ec2 describe-instance-types \
   --instance-types $INSTANCE_TYPE |grep "MEMORYINFO" |awk '{print $2}')
-
 
   DISK=$(aws ec2 describe-instance-types \
   --instance-types $INSTANCE_TYPE |grep "SUPPORTEDROOTDEVICETYPES" |awk '{print $2}')
@@ -66,6 +67,8 @@ aws ec2 describe-spot-price-history \
 
 ## Azure
 
+Azure is also pretty straight-forward but you will need to do some filtering on the query results to get the data you need.
+
 Resources:
 
 - [Spot Prices](https://azure.microsoft.com/en-us/pricing/spot-advisor/)
@@ -94,6 +97,8 @@ meterName eq $METER_NAME"\" \
 
 ## Equinix Spot Metal
 
+Equinix isnt a cloud-provider so much as a colocation service with a good set of APIs. They dont have a fancy cli so you just query an API endpoint and get back a json file that basically already in the format we want anyway.
+
 Resources
 - [Metros](https://metal.equinix.com/developers/docs/locations/metros/)
 - [Instance types](https://metal.equinix.com/product/servers/)
@@ -118,6 +123,7 @@ The fact that the only GPU capable SKU's are the N1 (random cpu) or A2 (cascade 
 
 - https://www.densify.com/articles/google-compute-engine-machine-types
 
+GCP is also frustrating because we have to put in a LOT of boilerplate to get the data we want. Since GCP doesnt use machine families the same way others do, we have to get the individual prices of the CPU type, RAM amount, and GPU type that we will use in the VM. Once we have all these data-points we can create a final price.
 
 ### How to get Prices
 
@@ -131,39 +137,79 @@ Create an API key using the gcloud CLI
 gcloud alpha services api-keys create --display-name=SOME_NAME
 ```
 
-Get price data about the CPU, RAM, and GPU per hour, then combine
+Get price per CPU core
 
 ```bash
-curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(bw get notes "GCP API key") > skus_compute_engine.json 
 
-CPU Types: "N1Standard", "CPU"
+# JQ explanation
+# 1. set the REGION arg to an array represented as a string - required to check multiple regions
+# 2. filter results for items in the desired regions. uses 'index' because we need to find an item in a nested array
+# 3. filter for items priced by the hour 'h'. This removes reserved instances from results
+# 4. filter based on the `resourceGroups` filed which is poorly named. It's closer to `family` or `machine type` from other cloud providers.
+# 5. filter usage types for Preemptable only, you could also filter for OnDemand type instances.
+# 6. Check if the description contains the GPU type we want. This data is oddly not in its own filed anywhere.
+
+curl https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?key=$(bw get notes "GCP API key") > skus_compute_engine.json
 
 export FAMILY="N1Standard" # or `CPU`
 export REGION='"europe-west1", "europe-west4", "europe-central2"'
 export CORES="2"
 export CPU_TIER="N1" # or A2 
-export DATA=$()
 
-DATA=$(cat skus_compute_engine.json | jq -r --arg REGION "$REGION" '.skus[] | select((.serviceRegions | index( '"$REGION"' )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and .category.usageType=="Preemptible" and select(.description | contains( env.CPU_TIER )))')
+DATA=$(cat skus_compute_engine.json \
+  | jq -r --arg REGION "$REGION" '.skus[] 
+  | select((.serviceRegions | index( '"$REGION"' )) 
+  and select(.pricingInfo[0].pricingExpression.usageUnit=="h") 
+  and .category.resourceGroup==env.FAMILY 
+  and .category.usageType=="Preemptible" 
+  and select(.description | contains( env.CPU_TIER )))')
 
 export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
 CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
 CPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $CORES" )
 echo "CPU Price: $CPU_PRICE"
+```
 
+Get price per GPU
 
-GPU Types: T4, K80, A100, V100, P100
+```bash
+# JQ explanation
+# 1. set the REGION arg to an array represented as a string - required to check multiple regions
+# 2. filter results for items in the desired regions. uses 'index' because we need to find an item in a nested array
+# 3. filter for items priced by the hour 'h'. This removes reserved instances from results
+# 4. filter based on the `resourceGroupz filed which is poorly named. It's closer to 'family' or 'machine type' from other cloud providers.
+# 5. filter usage types for Preemptable only, you could also filter for OnDemand type instances.
+# 6. Check if the description contains the GPU type we want. This data is oddly not in its own filed anywhere.
+
+GPU Types: T4, P4, A100, P100
 
 export FAMILY="GPU"
-export GPU_TYPE="T4"
+export GPU_TYPE="P100"
 export GPUS=1
 export REGION='"europe-west1", "europe-west4"'
-DATA=$(cat skus_compute_engine.json | jq -r --arg REGION "$REGION" '.skus[] | select((.serviceRegions | index( '"$REGION"' )) and select(.pricingInfo[0].pricingExpression.usageUnit=="h") and .category.resourceGroup==env.FAMILY and .category.usageType=="Preemptible" and select(.description | contains( env.GPU_TYPE )))')
-export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
-CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
-GPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $GPUS" )
-echo "GPU Price: $GPU_PRICE"
 
+DATA=$(cat skus_compute_engine.json \
+  | jq -r --arg REGION "$REGION" '.skus[] 
+  | select((.serviceRegions | index( '"$REGION"' )) 
+  and select(.pricingInfo[0].pricingExpression.usageUnit=="h") 
+  and .category.resourceGroup==env.FAMILY 
+  and .category.usageType=="Preemptible" 
+  and select(.description | contains( env.GPU_TYPE )))')
+
+
+export NANOS=$(echo $DATA \
+  |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
+
+CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
+
+GPU_PRICE=$( bc <<< "scale=5; $CONVERTED_RATE * $GPUS" )
+
+echo "GPU Price: $GPU_PRICE"
+```
+
+Combine prices
+
+```bash
 COMBINED_PRICE=$(bc <<< "scale=5; $CPU_PRICE + $GPU_PRICE")
 echo "Combined Price: $COMBINED_PRICE"
 ```
