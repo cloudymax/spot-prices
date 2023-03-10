@@ -93,6 +93,11 @@ GPU VM Types:
 |Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 | 163.43 |
 |Standard_NV36ads_A10_v5 | AMD EPYC 74F3V(Milan) | 36 | 440 | Nvidia A10 | 1 | 24 | 1152.32 |
 
+### availabilit:
+```bash
+az vm list-skus --location westeurope --size Standard_N --output table
+```
+
 ### How to Get Prices:
 ```bash
 API_URL="https://prices.azure.com/api/retail/prices"
