@@ -73,6 +73,21 @@ Resources:
 
 - [Spot Prices](https://azure.microsoft.com/en-us/pricing/spot-advisor/)
 - [Instance Types](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-general)
+- Nested virtualization is NOT supported on ANY of Azure's GPU VMs.
+
+GPU VM Types:
+
+| VM Name | CPU Name | vCores | RAM | GPU Name | GPUs | vRAM |
+| ---  | --- | ---    | --- | --- | ---  | ---  |
+|Standard_NC6 | Xeon E5-2690 v3 | 6 | 56 | Tesla K80 | 1 | 12 |
+|Standard_NC6s_v2 | Xeon E5-2690 v4 | 6 | 112 | Tesla P100 | 1 | 16 |
+|Standard_NC6s_v3 | Xeon E5-2690 v4 | 6 | 112 | Tesla V100 | 1 | 12 |
+|Standard_NC4as_T4_v3 | AMD EPYC 7V12(Rome) | 4 | 28 | Tesla T4 | 1 | 16 |
+|Standard_ND6s | Xeon E5-2690 v4  | 6 | 112 | Tesla P40 | 1 | 24 |
+|Standard_NV6 | Xeon E5-2690 v3 | 6 | 56 | Tesla M60 | 1/2 | 8 |
+|Standard_NV12s_v3 | Xeon E5-2690 v4 | 12| 112 | Tesla M60 | 0.5 | 8 |
+|Standard_NV4as_v4 | AMD EPYC 7V12(Rome) | 4 | 14 | Radeon MI25 | 1/8 | 4 |
+|Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 |
 
 ### How to Get Prices:
 ```bash
