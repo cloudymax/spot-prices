@@ -77,17 +77,21 @@ Resources:
 
 GPU VM Types:
 
-| VM Name | CPU Name | vCores | RAM | GPU Name | GPUs | vRAM |
-| ---  | --- | ---    | --- | --- | ---  | ---  |
-|Standard_NC6 | Xeon E5-2690 v3 | 6 | 56 | Tesla K80 | 1 | 12 |
-|Standard_NC6s_v2 | Xeon E5-2690 v4 | 6 | 112 | Tesla P100 | 1 | 16 |
-|Standard_NC6s_v3 | Xeon E5-2690 v4 | 6 | 112 | Tesla V100 | 1 | 12 |
-|Standard_NC4as_T4_v3 | AMD EPYC 7V12(Rome) | 4 | 28 | Tesla T4 | 1 | 16 |
-|Standard_ND6s | Xeon E5-2690 v4  | 6 | 112 | Tesla P40 | 1 | 24 |
-|Standard_NV6 | Xeon E5-2690 v3 | 6 | 56 | Tesla M60 | 1/2 | 8 |
-|Standard_NV12s_v3 | Xeon E5-2690 v4 | 12| 112 | Tesla M60 | 0.5 | 8 |
-|Standard_NV4as_v4 | AMD EPYC 7V12(Rome) | 4 | 14 | Radeon MI25 | 1/8 | 4 |
-|Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 |
+| VM Name | CPU Name | vCores | RAM | GPU Name | GPUs | vRAM | Monthly Spot |
+| ---  | --- | ---    | --- | --- | ---  | ---  | --- |
+|Standard_NC6 | Xeon E5-2690 v3 | 6 | 56 | Tesla K80 | 1 | 12 | 80.75 |
+|Standard_NC6s_v2 | Xeon E5-2690 v4 | 6 | 112 | Tesla P100 | 1 | 16 | 185.73 |
+|Standard_NC6s_v3 | Xeon E5-2690 v4 | 6 | 112 | Tesla V100 | 1 | 12 | 1,251.83 |
+|Standard_NC4as_T4_v3 | AMD EPYC 7V12(Rome) | 4 | 28 | Tesla T4 | 1 | 16 | 229.25 |
+|Standard_ND6s | Xeon E5-2690 v4  | 6 | 112 | Tesla P40 | 1 | 24 | 286.82 |
+|Standard_NV6 | Xeon E5-2690 v3 | 6 | 56 | Tesla M60 | 1/2 | 8 | 94.53 |
+|Standard_NV12 | Xeon E5-2690 v3 | 6 | 56 | Tesla M60 | 1 | 16 | 189.05 |
+|Standard_NV12s_v3 | Xeon E5-2690 v4 | 12| 112 | Tesla M60 | 0.5 | 8 | 98.75 |
+|Standard_NV24s_v3 | Xeon E5-2690 v4 | 12| 112 | Tesla M60 | 1 | 16 | 197.36 |
+|Standard_NV4as_v4 | AMD EPYC 7V12(Rome) | 4 | 14 | Radeon MI25 | 1/8 | 2 | 20.15 |
+|Standard_NV32as_v4 | AMD EPYC 7V12(Rome) | 32 | 112 | Radeon MI25 | 1 | 16 | 161.35 |
+|Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 | 163.43 |
+|Standard_NV36ads_A10_v5 | AMD EPYC 74F3V(Milan) | 36 | 440 | Nvidia A10 | 1 | 24 | 1152.32 |
 
 ### How to Get Prices:
 ```bash
