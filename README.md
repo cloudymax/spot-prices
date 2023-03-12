@@ -140,6 +140,8 @@ meterName eq $METER_NAME"\" \
 
 Equinix isnt a cloud-provider so much as a colocation service with a good set of APIs. They dont have a fancy cli so you just query an API endpoint and get back a json file that basically already in the format we want anyway.
 
+- locations: https://www.equinix.se/data-centers
+
 Resources
 - [Metros](https://metal.equinix.com/developers/docs/locations/metros/)
 - [Instance types](https://metal.equinix.com/product/servers/)
