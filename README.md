@@ -69,6 +69,9 @@ aws ec2 describe-spot-price-history \
 
 Azure is also pretty straight-forward but you will need to do some filtering on the query results to get the data you need. There are however some large potential issues you need to plan around.
 
+- westeurope = Netherlands
+- northeurope = Ireland
+
 1. Gen1 vs Gen2 VMs.
 
   - Azure has 2 hypervsirs they use. Gen1 which is based on legacy BIOS, and Gen2 which is based on UEFI. Many VM families only support one or the other, though some support both. You will need to check which is required by the VM family you want to use. See [HERE](https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2)
@@ -154,6 +157,9 @@ rich prices.json
 ```
 
 ## Google Cloud Platform
+
+- europe-west1 = Belgium
+- europe-west4 = Netherlands
 
 Google is the worst when it comes to transparancy around what exact CPU you will get when you request a VM from them.
 UNless you want the NEWEST (A2 - Cascade lake), you could get ANY cpu from a mix of old to really old CPUs.
