@@ -67,15 +67,33 @@ aws ec2 describe-spot-price-history \
 
 ## Azure
 
-Azure is also pretty straight-forward but you will need to do some filtering on the query results to get the data you need.
+Azure is also pretty straight-forward but you will need to do some filtering on the query results to get the data you need. There are however some large potential issues you need to plan around.
 
-Resources:
+1. Gen1 vs Gen2 VMs.
+
+  - Azure has 2 hypervsirs they use. Gen1 which is based on legacy BIOS, and Gen2 which is based on UEFI. Many VM families only support one or the other, though some support both. You will need to check which is required by the VM family you want to use. See [HERE](https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2)
+  
+2. Availability
+
+  - Not every Azure datacenter has every type of machine. You will need to check if the machine you want is availbe in the datacenter you will be using.
+  
+    ```bash
+    az vm list-skus --location "westeurope" \
+      --size Standard_N \
+      --output table
+    ```
+
+3. Quotas
+
+  - Azure uses resource quotas just liek all the other major clouds. These may be too low for you to create certain types of virtual machines, GPUs, Spot instances, or Low-Priority VMs. You can request quota changes via the portal [HERE](https://portal.azure.com/#view/Microsoft_Azure_Capacity/QuotaMenuBlade/~/overview).
+
+More Resources:
 
 - [Spot Prices](https://azure.microsoft.com/en-us/pricing/spot-advisor/)
 - [Instance Types](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-general)
 - Nested virtualization is NOT supported on ANY of Azure's GPU VMs.
 
-GPU VM Types:
+## GPU VM Types
 
 | VM Name | CPU Name | vCores | RAM | GPU Name | GPUs | vRAM | Monthly Spot |
 | ---  | --- | ---    | --- | --- | ---  | ---  | --- |
@@ -93,18 +111,14 @@ GPU VM Types:
 |Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 | 163.43 |
 |Standard_NV36ads_A10_v5 | AMD EPYC 74F3V(Milan) | 36 | 440 | Nvidia A10 | 1 | 24 | 1152.32 |
 
-### availabilit:
-```bash
-az vm list-skus --location westeurope --size Standard_N --output table
-```
+## Get current prices:
 
-### How to Get Prices:
 ```bash
 API_URL="https://prices.azure.com/api/retail/prices"
 LOCATION="'EU West'"
 SERVICE_NAME="'Virtual Machines'"
 SERVICE_FAMILY="'Compute'"
-ARM_SKU="Standard_D8d_v4"
+ARM_SKU="Standard_NV6ads_A10_v5"
 METER_NAME=$(echo "'$ARM_SKU Spot'"| sed 's/Standard_//g' |sed 's/_/ /g')
 ARM_SKU_NAME=$(echo "'$ARM_SKU'")
 
