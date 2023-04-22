@@ -1,0 +1,349 @@
+vendors:
+
+  aws:
+  
+    gpu:
+
+    noGpu:
+
+      m6a-large:
+        name: "m6a.large"
+        cpu: 
+          - "7713"
+        numCpus: 1
+        vCores: 2
+        ram: "8GB"
+        diskSize: "EBS ONLY"
+        numDisks: 0
+        price: 1.00
+
+      m6a-2xlarge:
+        name: "m6a.2xlarge"
+        cpu: 
+           - "7713"
+        numCpus: 1
+        vCores: 4
+        ram: "16GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+      m6a-4xlarge:
+        name: "m6a.4xlarge"
+        cpu: 
+          - "7713"
+        numCpus: 1
+        vCores: 8
+        ram: "32GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+      m6i-large:
+        name: "m6i.large"
+        cpu: 
+          - "8375C"
+        numCpus: 1
+        vCores: 2
+        ram: "8GB"
+        diskSize: "EBS ONLY"
+        numDisks: 0
+        price: 1.00
+
+      m6i-2xlarge:
+        name: "m6i.2xlarge"
+        cpu: 
+           - "8375C"
+        numCpus: 1
+        vCores: 4
+        ram: "16GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+      m6i-4xlarge:
+        name: "m6i.4xlarge"
+        cpu: 
+          - "8375C"
+        numCpus: 1
+        vCores: 8
+        ram: "32GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+      t3-large:
+        name: "t3.large"
+        cpu: 
+          - "8175M"
+          - "8259CL"
+        numCpus: 1
+        vCores: 2
+        ram: "8GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+      t3-xlarge:
+        name: "t3.xlarge"
+        cpu: 
+          - "8175M"
+          - "8259CL"
+        numCpus: 1
+        vCores: 4
+        ram: "16GB"
+        diskSize: "EBS Only"
+        numDisks: 0
+        price: 1.00
+
+  azure:
+ 
+    gpu:
+
+    noGpu:
+
+      standard_D2ads_v5:
+        name: "Standard_D2ads_v5"
+        cpu: "EPYC 7763v"
+        vCores: 2
+        ram: 8GB
+        diskSize: "75GB"
+        numDisks: 1
+        price: 1.00
+
+      standard_D2ds_v5:
+        name: "Standard_D2ads_v5"
+        cpu: "Xeon Platinum 8370C"
+        vCores: 2
+        ram: 8GB
+        diskSize: "75GB"
+        numDisks: 1
+        price: 1.00
+
+      Standard_DC2s_v2:
+        name: "Standard_DC2s_v2"
+        cpu: "Xeon E-2288G"
+        vCores: 2
+        ram: 8GB
+        diskSize: "50GB"
+        numDisks: 1
+        price: 1.00
+
+  gcp:
+
+    gpu:
+
+    noGpu:
+      n1-standard-2:
+        name: "n1-standard-2"
+        cpu: 
+          - "Xeon Platinum 8173M"
+          - "Xeon E5-2696V4"
+          - "Xeon E5-2696V3"
+          - "Xeon E5-2696V2"
+          - "Xeon E5-2689"
+        vCores: 2
+        ram: 8GB
+        diskSize: 0
+        numDisks: 0
+        price: 1.00
+
+      e2-standard-2:
+        name: "e2-standard-2"
+        cpu: "Xeon E-2288G"
+        vCores: 2
+        ram: 8GB
+        diskSize: 0
+        numDisks: 0
+        price: 1.00
+
+      n2-standard-2:
+        name: "n2-standard-2"
+        cpu: "Xeon E-2288G"
+        vCores: 2
+        ram: 8GB
+        diskSize: 0
+        numDisks: 0
+        price: 1.00
+
+
+  equinix:
+ 
+    gpu:
+
+    noGpu:
+      a3-large-x86:
+        name: "a3.large.x86"
+        cpu: "Intel Xeon 6338"
+        numCpus: 2
+        ram: "1TB"
+        diskSize: "240GB"
+        numDisks: 2
+        price: 1.00
+
+      c3-large-arm64:
+
+      c3-medium-x86:
+
+      c3-small-x86:
+
+      m3-large-x86:
+
+      m3-small-x86:
+
+      n2-xlarge-x86:
+
+      n3-xlarge-x86:
+
+      s3-xlarge-x86:
+
+processors:
+
+  amd:
+    7763v:
+      name: "EPYC 7763v"
+      date: 2021
+      cores: 64
+      threads: 128
+      baseClock: 2450
+      turboClock: 3500
+      tdp: 280
+      memory: "DDR4"
+      cpumarkSingleThread: 2576
+      cpumarkMultiThread: 85915
+
+    7713:
+      name: "EPYC 7713"
+      date: 2021
+      cores: 64
+      threads: 128
+      baseClock: 2000
+      turboClock: 3670
+      tdp: 240
+      memory: "DDR4"
+      cpumarkSingleThread: 2721
+      cpumarkMultiThread: 85165
+
+  intel:
+    8173M:
+      name: "Xeon Platinum 8173M"
+      date: 2017
+      cores: 28
+      threads: 56
+      baseClock: 2100
+      turboClock: 3800
+      tdp: 205
+      memory: "DDR4"
+      cpumarkSingleThread: 2003
+      cpumarkMultiThread: 31837
+
+    2696V4:
+      name: "Xeon 2696v4"
+      date: 2016
+      cores: 22
+      threads: 44
+      baseClock: 2200
+      turboClock: 3600
+      tdp: 150
+      memory: "DDR4"
+      cpumarkSingleThread: 2179
+      cpumarkMultiThread: 25154
+
+    2696V3:
+      name: "Xeon 2696v3"
+      date: 2014
+      cores: 18
+      threads: 36
+      baseClock: 2300
+      turboClock: 3600
+      tdp: 145
+      memory: "DDR4"
+      cpumarkSingleThread: 2145
+      cpumarkMultiThread: 23320
+
+    2696V2:
+      name: "Xeon 2696v3"
+      date: 2013
+      cores: 12
+      threads: 24
+      baseClock: 2500
+      turboClock: 3300
+      tdp: 120
+      memory: "DDR3"
+      cpumarkSingleThread: 1698
+      cpumarkMultiThread: 14369
+
+    #"Xeon E5-2689"
+
+    8175M:
+      name: "Xeon Platinum 8175M"
+      date: 2018
+      cores: 24
+      threads: 48
+      baseClock: 2500
+      turboClock: 3500
+      tdp: 240
+      memory: "DDR4"
+      cpumarkSingleThread: 1796
+      cpumarkMultiThread: 26659
+
+    8259CL:
+      name: "Xeon Platinum 8259CL"
+      date: 2020
+      cores: 24
+      threads: 48
+      baseClock: 2500
+      turboClock: 3500
+      tdp: 210
+      memory: "DDR4"
+      cpumarkSingleThread: 1781
+      cpumarkMultiThread: 33279
+
+    8375C:
+      name: "Xeon Platinum 8375C"
+      date: 2021
+      cores: 32
+      threads: 64
+      baseClock: 2900
+      turboClock: 3500
+      tdp: 300
+      memory: "DDR4"
+      cpumarkSingleThread: 2439
+      cpumarkMultiThread: 51836
+
+    6338:
+      name: "Xeon Gold 6338"
+      date: 2021
+      cores: 32
+      threads: 64
+      baseClock: 2000
+      turboClock: 3200
+      tdp: 205
+      memory: "DDR4"
+      cpumarkSingleThread: 2446
+      cpumarkMultiThread: 46583
+
+    8370C:
+      name: "Xeon Platinum 8370C"
+      date: 2021
+      cores: 32
+      threads: 64
+      baseClock: 2800
+      turboClock: 3500
+      tdp: 270
+      memory: "DDR4"
+      cpumarkSingleThread: 0
+      cpumarkMultiThread: 0
+
+    8370C:
+      name: "Xeon E-2288G"
+      date: 2019
+      cores: 8
+      threads: 16
+      baseClock: 3700
+      turboClock: 5000
+      tdp: 95w
+      memory: "DDR4"
+      cpumarkSingleThread: 2783
+      cpumarkMultiThread: 17418
+
