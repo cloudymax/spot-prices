@@ -176,21 +176,41 @@ vendors:
         name: "a3.large.x86"
         cpu: "Intel Xeon 6338"
         numCpus: 2
+        vCores: 128
         ram: "1TB"
         diskSize: "240GB"
         numDisks: 2
-        price: 1.00
+        price: 0.75
 
       c3-large-arm64:
 
       c3-medium-x86:
+        name: "c3.medium.x86"
+        cpu: "EPYC 7402P"
+        numCpus: 1
+        vCores: 48
+        ram: "64GB"
+        diskSize: 
+          - "240GB"
+          - "480GB"
+        numDisks: 4
+        price: 0.36
 
       c3-small-x86:
 
       m3-large-x86:
 
       m3-small-x86:
-
+        name: "m3.small.x86"
+        cpu: "Xeon E-2378G"
+        numCpus: 1
+        vCores: 16
+        ram: "64GB"
+        diskSize: 
+          - "480GB"
+        numDisks: 2
+        price: 0.11
+        
       n2-xlarge-x86:
 
       n3-xlarge-x86:
@@ -224,6 +244,18 @@ processors:
       cpumarkSingleThread: 2721
       cpumarkMultiThread: 85165
 
+    7402P:
+      name: "EPYC 7402P"
+      date: 2019
+      cores: 24
+      threads: 48
+      baseClock: 2800
+      turboClock: 3350
+      tdp: 180
+      memory: "DDR4"
+      cpumarkSingleThread: 1947
+      cpumarkMultiThread: 42245
+      
   intel:
     8173M:
       name: "Xeon Platinum 8173M"
@@ -335,7 +367,7 @@ processors:
       cpumarkSingleThread: 0
       cpumarkMultiThread: 0
 
-    8370C:
+    2288G:
       name: "Xeon E-2288G"
       date: 2019
       cores: 8
@@ -347,3 +379,14 @@ processors:
       cpumarkSingleThread: 2783
       cpumarkMultiThread: 17418
 
+    2378G:
+      name: "Xeon E-2378G"
+      date: 2021
+      cores: 8
+      threads: 16
+      baseClock: 2800
+      turboClock: 5100
+      tdp: 80w
+      memory: "DDR4"
+      cpumarkSingleThread: 3477
+      cpumarkMultiThread: 22755
