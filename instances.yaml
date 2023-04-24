@@ -174,7 +174,7 @@ vendors:
     noGpu:
       a3-large-x86:
         name: "a3.large.x86"
-        cpu: "Intel Xeon 6338"
+        cpu: "6338"
         numCpus: 2
         vCores: 128
         ram: "1TB"
@@ -186,7 +186,7 @@ vendors:
 
       c3-medium-x86:
         name: "c3.medium.x86"
-        cpu: "EPYC 7402P"
+        cpu: "7402P"
         numCpus: 1
         vCores: 48
         ram: "64GB"
@@ -202,7 +202,7 @@ vendors:
 
       m3-small-x86:
         name: "m3.small.x86"
-        cpu: "Xeon E-2378G"
+        cpu: "2378G"
         numCpus: 1
         vCores: 16
         ram: "64GB"
