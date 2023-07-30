@@ -156,16 +156,15 @@ Resources
 - [Metros](https://metal.equinix.com/developers/docs/locations/metros/)
 - [Instance types](https://metal.equinix.com/product/servers/)
 
-### How to Get Prices
-```bash
-TOKEN=""
-URL="https://api.equinix.com/metal/v1/market/spot/prices/metros"
-METRO="am"
+### How to Get Prices with a gross one-liner
 
+```bash
+TOKEN=$(bw get notes equinix-api-token) && \
+URL="https://api.equinix.com/metal/v1/market/spot/prices/metros" && \
+METRO="am" && \
 PRICES=$(curl -X GET -H "X-Auth-Token: $TOKEN" $URL -d "metro=$METRO" | \
 python3 -c "import sys, json; print(json.load(sys.stdin)['spot_market_prices']['am'])"| sed "s/'/\"/g") && \
-echo $PRICES > prices.json && \
-rich prices.json
+echo $PRICES |jq
 ```
 
 ## Google Cloud Platform
@@ -275,8 +274,7 @@ DATA=$(cat skus_compute_engine.json \
   and select(.description | contains( env.GPU_TYPE )))')
 
 
-export NANOS=$(echo $DATA \
-  |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
+export NANOS=$(echo $DATA |jq '.pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos')
 
 CONVERTED_RATE=$(bc <<< "scale=5; $NANOS/1000000000")
 
