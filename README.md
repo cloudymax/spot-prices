@@ -114,17 +114,28 @@ More Resources:
 |Standard_NV6ads_A10_v5 | AMD EPYC 74F3V(Milan) | 6 | 55 | Nvidia A10 | 1/6 | 4 | 163.43 |
 |Standard_NV36ads_A10_v5 | AMD EPYC 74F3V(Milan) | 36 | 440 | Nvidia A10 | 1 | 24 | 1152.32 |
 
-## Get current prices:
+## Get current prices witha gross one-liner:
 
 ```bash
-API_URL="https://prices.azure.com/api/retail/prices"
 LOCATION="'EU West'"
-SERVICE_NAME="'Virtual Machines'"
-SERVICE_FAMILY="'Compute'"
-ARM_SKU="Standard_NV6ads_A10_v5"
-METER_NAME=$(echo "'$ARM_SKU Spot'"| sed 's/Standard_//g' |sed 's/_/ /g')
-ARM_SKU_NAME=$(echo "'$ARM_SKU'")
-
+ARM_SKU="Standard_NV6ads_A10_v5" && \
+METER_NAME=$(echo "'$ARM_SKU Spot'"| sed 's/Standard_//g' |sed 's/_/ /g') && \
+ARM_SKU_NAME=$(echo "'$ARM_SKU'") && \
+docker run --platform linux/amd64 \
+-e API_URL="https://prices.azure.com/api/retail/prices" \
+-e LOCATION="$LOCATION"  \
+-e SERVICE_NAME="'Virtual Machines'" \
+-e SERVICE_FAMILY="'Compute'" \
+-e METER_NAME="$METER_NAME" \
+-e ARM_SKU_NAME="$ARM_SKU_NAME" \
+-e ARM_SKU="Standard_NV6ads_A10_v5" \
+-e ARM_CLIENT_ID=$(bw get item admin-robot |jq -r '.fields[] |select(.name=="clientId") |.value') \
+-e ARM_CLIENT_SECRET=$(bw get item admin-robot |jq -r '.fields[] |select(.name=="clientSecret") |.value') \
+-e ARM_TENANT_ID=$(bw get item admin-robot |jq -r '.fields[] |select(.name=="tenantId") |.value') \
+mcr.microsoft.com/azure-cli:2.9.1 sh -c 'az login --service-principal \
+--username "$ARM_CLIENT_ID" \
+--password "$ARM_CLIENT_SECRET" \
+--tenant "$ARM_TENANT_ID" 2>&1 > /dev/null && \
 echo "az rest --method get --uri \"${API_URL}?\\\$filter=\
 location eq $LOCATION and \
 serviceName eq $SERVICE_NAME and \
@@ -132,8 +143,7 @@ serviceFamily eq $SERVICE_FAMILY and \
 armSkuName eq $ARM_SKU_NAME and \
 meterName eq $METER_NAME"\" \
 --query \"[Items][0][*].{Name:productName, SKU:armSkuName, Location:location, Price:retailPrice}\" \
--o table |bash |grep -v Windows
-
+-o table |sh'
 ```
 
 ## Equinix Spot Metal
