@@ -1,0 +1,30 @@
+name: Run Terraform
+on:
+  workflow_dispatch:
+
+jobs:
+  get-prices:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Azure CLI
+      uses: elstudio/action-install-azure-cli@v1
+
+    - name: Public IP
+      id: ip
+      uses: haythem/public-ip@v1.3
+      
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+    - name: Manage Firewalls
+      run: |
+        chmod +x access-helper.sh && \
+        bash access-helper.sh add $RUNNER_IP $RESOURCE_GROUP
+      shell: bash
+      env:
+        RUNNER_IP: ${{ steps.ip.outputs.ipv4 }}
+        RESOURCE_GROUP: ${{ github.event.inputs.resource_group }}
