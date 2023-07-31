@@ -1,4 +1,4 @@
-name: Run Terraform
+name: Azure Prices
 on:
   workflow_dispatch:
 
