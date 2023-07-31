@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Usage
+# bash spot-check-gcp.sh get_all_sku_data <TOKEN>
+# bash spot-check-gcp.sh get "<InstanceType>" "<region>" "<vCores>" "<cpu_tier>" "<memory>" "gpu_type" num_gpus
+# bash spot-check-gcp.sh get "N1Standard" "europe-west4" "16" "N1" "64" "L4" 0
+
 get_all_sku_data(){
   DONE="false"
   PAGE=0
