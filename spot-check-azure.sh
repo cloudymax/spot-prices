@@ -30,4 +30,4 @@ serviceFamily eq $SERVICE_FAMILY and \
 armSkuName eq $ARM_SKU_NAME and \
 meterName eq $METER_NAME"\" \
 --query \"[Items][0][*].{name:productName, sku:armSkuName, location:location, hourly_price:retailPrice, hourly_price:retailPrice, currency:currencyCode, type:type}\" \
--o json |sh'
+-o json |sh' |jq '.[] | select(.name |contains("Windows") | not)'
