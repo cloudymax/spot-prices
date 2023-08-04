@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# example
+# bash spot-check-azure.sh Standard_ND6s "'EU West'"
+
 export ARM_SKU=$1
-export LOCATION="$2"
+export LOCATION=$2
 export METER_NAME=$(echo "'$ARM_SKU Spot'"| sed 's/Standard_//g' |sed 's/_/ /g')
 export ARM_SKU_NAME=$(echo "'$ARM_SKU'")
 
@@ -27,6 +30,4 @@ serviceFamily eq $SERVICE_FAMILY and \
 armSkuName eq $ARM_SKU_NAME and \
 meterName eq $METER_NAME"\" \
 --query \"[Items][0][*].{name:productName, sku:armSkuName, location:location, hourly_price:retailPrice, hourly_price:retailPrice, currency:currencyCode, type:type}\" \
--o json |sh' |jq
-
-"$@"
+-o json |sh'
