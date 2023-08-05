@@ -30,4 +30,14 @@ serviceFamily eq $SERVICE_FAMILY and \
 armSkuName eq $ARM_SKU_NAME and \
 meterName eq $METER_NAME"\" \
 --query \"[Items][0][*].{name:productName, sku:armSkuName, location:location, hourly_price:retailPrice, hourly_price:retailPrice, currency:currencyCode, type:type}\" \
--o json |sh' |jq '.[] | select(.name |contains("Windows") | not)'
+-o json --only-show-errors| sh' |jq '.[] | select(.name |contains("Windows") | not)' > price.json
+
+
+export CPU=$(yq -r --prettyPrint -o=json '.vendors.azure.noGpu[] |select (.name == env(ARM_SKU)) | .cpu' instances.yaml)
+
+yq -r --prettyPrint -o=json '.processors.*.[] | select (.name == env(CPU))' instances.yaml > cpu-info.json
+
+jq -s '.[0] * .[1]' cpu-info.json price.json
+
+rm ./cpu-info.json
+rm ./ price.json
