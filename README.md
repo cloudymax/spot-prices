@@ -2,6 +2,52 @@
 
 These are just my notes, check out https://cloudoptimizer.io/ for a real implimentation 
 
+## Usage
+
+Find CPU by trait:
+```bash
+# Get the CPU with the fastest single-threaded performance
+yq '.processors.intel |sort_by(.cpumarkSingleThread)' instances.yaml |yq '.[-1]'
+```
+Output:
+```yaml
+cpu_name: Xeon E-2378G
+slug: 2378G
+release_date: 2021
+cpu_cores: 8
+cpu_threads: 16
+baseClock: 2800
+turboClock: 5100
+tdp: 80w
+memory: DDR4
+cpumarkSingleThread: 3477
+cpumarkMultiThread: 22755
+```
+Just get the name:
+```
+yq '.processors.intel |sort_by(.cpumarkSingleThread)' instances.yaml |yq '.[-1].cpu_name'
+> Xeon E-2378G
+```
+
+Find instance by CPU:
+```bash
+# get all instances using that CPU modle
+> yq '.vendors.*.*.[] | select(.cpu == "Xeon E-2378G")' instances.yaml
+```
+
+Output:
+```yaml
+instance_name: m3.small.x86
+cpu: Xeon E-2378G
+numCpus: 1
+instance_vCores: 16
+ram: 64GB
+diskSize:
+  - 480GB
+numDisks: 2
+price: 0.11
+```
+
 ## AWS
 
 Getting AWS prices is actuall pretty straight-forward, each metadata filed is queryable in an intuitive way.
