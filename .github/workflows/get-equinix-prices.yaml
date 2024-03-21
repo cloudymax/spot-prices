@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       
-    - name: Terraform Plan
+    - name: Get Prices
       id: plan
       run: |
         PRICES=$(curl -X GET -H "X-Auth-Token: ${{ secrets.TOKEN }}" $URL -d "metro=$METRO" | \
