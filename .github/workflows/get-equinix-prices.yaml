@@ -11,7 +11,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: |
-        PRICES=$(curl -X GET -H "X-Auth-Token: $TOKEN" $URL -d "metro=$METRO" | \
+        PRICES=$(curl -X GET -H "X-Auth-Token: ${{ secrets.TOKEN }}" $URL -d "metro=$METRO" | \
         python3 -c "import sys, json; print(json.load(sys.stdin)['spot_market_prices']['am'])"| sed "s/'/\"/g")
         echo $PRICES
       continue-on-error: false
@@ -19,8 +19,3 @@ jobs:
       env:
         URL: "https://api.equinix.com/metal/v1/market/spot/prices/metros"
         METRO: "am"
-        CLOUD_INIT: ${{ github.event.inputs.cloud-init-template }}
-        VM_USERNAME: ${{ github.event.inputs.vm_username }}
-        GH_USERNAME: ${{ github.event.inputs.github_username }}
-        AWS_ACCESS_KEY_ID: ${{ github.event.inputs.github_username }}
-        AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.github_username }}
