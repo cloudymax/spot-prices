@@ -214,7 +214,7 @@ python3 -c "import sys, json; print(json.load(sys.stdin)['spot_market_prices']['
 echo $PRICES |jq
 ```
 
-## Google Cloud Platform
+## Google Cloud Platform (out of date, api now on v2beta)
 
 - europe-west1 = Belgium
 - europe-west4 = Netherlands
